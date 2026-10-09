@@ -17,7 +17,7 @@ test("admin logs in, sees the full navigation and logs out", async ({ page }) =>
   await expect(page.getByRole("alert").filter({ hasText: "Email sau parolă incorectă." })).toBeVisible();
 
   await login(page, admin.email);
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: /^Bună/ })).toBeVisible();
   const nav = page.getByRole("navigation", { name: "Navigare principală" }).first();
   for (const label of ["Dashboard", "Încasări", "Cheltuieli", "Rapoarte", "Setări"]) {
     await expect(nav.getByRole("link", { name: label })).toBeVisible();
@@ -74,5 +74,5 @@ test("password reset by email", async ({ page }) => {
   await login(page, user.email, PASSWORD);
   await expect(page.getByRole("alert").filter({ hasText: "Email sau parolă incorectă." })).toBeVisible();
   await login(page, user.email, newPassword);
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: /^Bună/ })).toBeVisible();
 });

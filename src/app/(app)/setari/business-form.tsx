@@ -43,12 +43,12 @@ export function BusinessForm({ business }: { business: Business }) {
       </div>
 
       <fieldset>
-        <legend className="text-sm font-medium text-slate-700">Monede folosite</legend>
-        <p className="mt-0.5 text-xs text-slate-500">
+        <legend className="text-sm font-medium text-stone-700">Monede folosite</legend>
+        <p className="mt-0.5 text-xs text-stone-500">
           Rapoartele sunt în RON. Monedele bifate apar în formularele de încasări și cheltuieli.
         </p>
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <label className="flex items-center gap-2 text-sm text-slate-500">
+          <label className="flex items-center gap-2 text-sm text-stone-500">
             <input type="checkbox" checked disabled className="size-4 accent-brand-600" /> RON
           </label>
           {COMMON_CURRENCIES.map((c) => (

@@ -13,3 +13,12 @@ describe("format", () => {
     expect(todayRO(new Date("2026-10-09T22:30:00Z"))).toBe("2026-10-10");
   });
 });
+
+describe("greetingRO", () => {
+  it("follows the time in Romania", async () => {
+    const { greetingRO } = await import("./format");
+    expect(greetingRO(new Date("2026-10-09T05:00:00Z"))).toBe("Bună dimineața"); // 08:00 in Bucharest
+    expect(greetingRO(new Date("2026-10-09T11:00:00Z"))).toBe("Bună ziua");
+    expect(greetingRO(new Date("2026-10-09T17:30:00Z"))).toBe("Bună seara");
+  });
+});

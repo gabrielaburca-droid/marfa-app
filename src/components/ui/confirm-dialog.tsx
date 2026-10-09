@@ -34,24 +34,24 @@ export function ConfirmButton({
         className={
           className ||
           (variant === "danger"
-            ? "text-sm font-medium text-red-600 hover:text-red-700"
-            : "text-sm font-medium text-slate-600 hover:text-slate-900")
+            ? "text-sm font-medium text-stone-500 hover:text-rose-600"
+            : "text-sm font-medium text-stone-600 hover:text-stone-900")
         }
       >
         {label}
       </button>
       <dialog
         ref={ref}
-        className="m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl p-0 shadow-xl backdrop:bg-slate-900/40"
+        className="m-auto w-[calc(100%-2rem)] max-w-md rounded-3xl p-0 shadow-2xl backdrop:bg-stone-900/30 backdrop:backdrop-blur-[2px]"
         aria-labelledby="confirm-title"
       >
         <div className="space-y-3 p-6">
-          <h2 id="confirm-title" className="text-lg font-semibold">
+          <h2 id="confirm-title" className="text-lg font-bold text-stone-900">
             {title}
           </h2>
-          <p className="text-sm text-slate-600">{description}</p>
+          <p className="text-sm text-stone-600">{description}</p>
         </div>
-        <div className="flex justify-end gap-2 bg-slate-50 px-6 py-4">
+        <div className="flex justify-end gap-2 px-6 pb-6">
           <Button variant="secondary" type="button" onClick={() => ref.current?.close()}>
             Renunță
           </Button>

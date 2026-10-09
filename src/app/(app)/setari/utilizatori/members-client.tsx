@@ -69,9 +69,9 @@ function MemberRow({ m }: { m: Member }) {
     <li className={`flex flex-wrap items-center gap-x-4 gap-y-3 px-4 py-4 ${pending ? "opacity-60" : ""}`}>
       <div className="min-w-48 flex-1">
         <p className="text-sm font-medium">
-          {m.name || m.email} {m.isSelf && <span className="text-slate-400">(dvs.)</span>}
+          {m.name || m.email} {m.isSelf && <span className="text-stone-400">(dvs.)</span>}
         </p>
-        {m.name && <p className="text-xs text-slate-500">{m.email}</p>}
+        {m.name && <p className="text-xs text-stone-500">{m.email}</p>}
       </div>
       <div className="flex flex-wrap items-center gap-2">
         {!m.isActive ? (
@@ -96,7 +96,7 @@ function MemberRow({ m }: { m: Member }) {
               setRole(next);
               save({ role: next, can_view_reports: reports });
             }}
-            className="rounded-lg border-0 bg-white py-1.5 pr-8 pl-2 text-sm ring-1 ring-slate-300"
+            className="rounded-xl border-0 bg-white py-1.5 pr-8 pl-3 text-sm ring-1 ring-stone-200"
           >
             {Object.entries(ROLE_LABELS).map(([value, label]) => (
               <option key={value} value={value}>
@@ -146,7 +146,7 @@ function MemberRow({ m }: { m: Member }) {
               type="button"
               disabled={pending}
               onClick={() => start(async () => notify(await setMemberActive(m.id, true)))}
-              className="text-sm font-medium text-slate-600 hover:text-slate-900"
+              className="text-sm font-medium text-stone-600 hover:text-stone-900"
             >
               Reactivează
             </button>
@@ -158,7 +158,7 @@ function MemberRow({ m }: { m: Member }) {
 
 export function MembersTable({ members }: { members: Member[] }) {
   return (
-    <ul className="divide-y divide-slate-100 rounded-xl ring-1 ring-slate-200">
+    <ul className="divide-y divide-stone-100 -mx-1">
       {members.map((m) => (
         <MemberRow key={m.id} m={m} />
       ))}

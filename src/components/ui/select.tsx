@@ -11,7 +11,7 @@ export function SelectField({
   const errorId = errors?.length ? `${props.id ?? name}-error` : undefined;
   return (
     <div className="space-y-1.5">
-      <label htmlFor={props.id ?? name} className="block text-sm font-medium text-slate-700">
+      <label htmlFor={props.id ?? name} className="block text-sm font-medium text-stone-600">
         {label}
       </label>
       <select
@@ -25,7 +25,7 @@ export function SelectField({
         {children}
       </select>
       {errorId && (
-        <p id={errorId} className="text-sm text-red-600">
+        <p id={errorId} className="text-sm text-rose-600">
           {errors![0]}
         </p>
       )}
@@ -50,11 +50,11 @@ export function CheckboxField({
         type="checkbox"
         name={name}
         defaultChecked={defaultChecked}
-        className="mt-0.5 size-4 rounded border-slate-300 text-brand-600 accent-brand-600"
+        className="mt-0.5 size-4 rounded border-stone-300 text-brand-600 accent-brand-600"
       />
       <span>
-        <span className="font-medium text-slate-700">{label}</span>
-        {hint && <span className="block text-xs text-slate-500">{hint}</span>}
+        <span className="font-medium text-stone-700">{label}</span>
+        {hint && <span className="block text-xs text-stone-500">{hint}</span>}
       </span>
     </label>
   );

@@ -1,14 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #f0f9f3;
-  --color-brand-100: #dcf1e3;
-  --color-brand-200: #bbe2c9;
-  --color-brand-500: #2f9e5b;
-  --color-brand-600: #217f47;
-  --color-brand-700: #1c663b;
-  --color-brand-800: #195232;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* Calm sage green: positive results and primary actions. */
+  --color-brand-50: #eff7f2;
+  --color-brand-100: #d9eee1;
+  --color-brand-200: #b6dcc4;
+  --color-brand-300: #8cc4a2;
+  --color-brand-500: #3f9468;
+  --color-brand-600: #2f7a54;
+  --color-brand-700: #276345;
+  --color-brand-800: #214f39;
+
+  /* Warm paper background behind white cards. */
+  --color-canvas: #f6f5f1;
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 1.25rem;
+  --shadow-soft: 0 1px 2px rgb(28 25 23 / 0.04), 0 4px 16px -6px rgb(28 25 23 / 0.08);
 }
 
 :root {
@@ -16,10 +24,14 @@
 }
 
 body {
-  @apply bg-slate-50 text-slate-900;
+  @apply bg-canvas text-stone-800;
 }
 
 /* Numbers line up in tables and summary cards. */
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  @apply bg-brand-100 text-brand-800;
 }

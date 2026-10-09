@@ -41,3 +41,25 @@ export function formatDateTime(iso: string): string {
 export function todayRO(now = new Date()): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Bucharest" }).format(now);
 }
+
+/** "Bună dimineața" / "Bună ziua" / "Bună seara", by the time in Romania. */
+export function greetingRO(now = new Date()): string {
+  const hour = Number(
+    new Intl.DateTimeFormat("en-GB", { hour: "numeric", hour12: false, timeZone: "Europe/Bucharest" }).format(
+      now,
+    ),
+  );
+  if (hour >= 5 && hour < 12) return "Bună dimineața";
+  if (hour >= 12 && hour < 18) return "Bună ziua";
+  return "Bună seara";
+}
+
+/** "joi, 9 octombrie" */
+export function longDateRO(now = new Date()): string {
+  return new Intl.DateTimeFormat("ro-RO", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: "Europe/Bucharest",
+  }).format(now);
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { CircleAlert, CircleCheck } from "lucide-react";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { FormState } from "@/lib/validation/auth";
 
@@ -28,12 +29,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           <div
             key={t.id}
             role={t.tone === "error" ? "alert" : "status"}
-            className={`pointer-events-auto w-full max-w-sm rounded-xl px-4 py-3 text-sm font-medium shadow-lg ring-1 ${
-              t.tone === "error"
-                ? "bg-red-600 text-white ring-red-700"
-                : "bg-slate-900 text-white ring-slate-800"
-            }`}
+            className="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-2xl bg-stone-900 px-4 py-3 text-sm font-medium text-white shadow-xl"
           >
+            {t.tone === "error" ? (
+              <CircleAlert className="mt-0.5 size-4 shrink-0 text-rose-300" aria-hidden />
+            ) : (
+              <CircleCheck className="mt-0.5 size-4 shrink-0 text-brand-300" aria-hidden />
+            )}
             {t.message}
           </div>
         ))}

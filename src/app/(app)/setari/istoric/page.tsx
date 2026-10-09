@@ -49,7 +49,7 @@ export default async function AuditPage({ searchParams }: PageProps<"/setari/ist
             id="tip"
             name="tip"
             defaultValue={entity ?? ""}
-            className="rounded-lg border-0 bg-white py-1.5 pr-8 pl-2 text-sm ring-1 ring-slate-300"
+            className="rounded-xl border-0 bg-white py-1.5 pr-8 pl-3 text-sm ring-1 ring-stone-200"
           >
             <option value="">Toate</option>
             {Object.entries(ENTITY_LABELS).map(([value, label]) => (
@@ -68,9 +68,9 @@ export default async function AuditPage({ searchParams }: PageProps<"/setari/ist
         <EmptyState title="Nu există modificări înregistrate." />
       ) : (
         <>
-          <div className="overflow-x-auto rounded-xl ring-1 ring-slate-200">
+          <div className="overflow-x-auto -mx-1">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+              <thead className="text-left text-xs font-semibold text-stone-400">
                 <tr>
                   <th className="px-4 py-2">Data și ora</th>
                   <th className="px-4 py-2">Cine</th>
@@ -79,7 +79,7 @@ export default async function AuditPage({ searchParams }: PageProps<"/setari/ist
                   <th className="px-4 py-2">Detalii</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-stone-100">
                 {logs.map((l) => (
                   <tr key={l.id} className="align-top">
                     <td className="px-4 py-2 whitespace-nowrap tabular">{formatDateTime(l.created_at)}</td>
@@ -88,7 +88,7 @@ export default async function AuditPage({ searchParams }: PageProps<"/setari/ist
                     </td>
                     <td className="px-4 py-2">{ACTION_LABELS[l.action] ?? l.action}</td>
                     <td className="px-4 py-2">{ENTITY_LABELS[l.entity_type] ?? l.entity_type}</td>
-                    <td className="max-w-md px-4 py-2 text-slate-600">
+                    <td className="max-w-md px-4 py-2 text-stone-600">
                       {summarizeChanges(l.action, l.changes)}
                     </td>
                   </tr>
@@ -105,7 +105,7 @@ export default async function AuditPage({ searchParams }: PageProps<"/setari/ist
               ) : (
                 <span />
               )}
-              <span className="text-slate-500">
+              <span className="text-stone-500">
                 Pagina {page} din {pages}
               </span>
               {page < pages ? (

@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown, ChevronUp, EyeOff, Pencil } from "lucide-react";
 import { useActionState, useRef, useState, useTransition } from "react";
 import { Badge, EmptyState } from "@/components/ui/card";
 import { ConfirmButton } from "@/components/ui/confirm-dialog";
@@ -116,7 +117,7 @@ function ItemForm({
           <button
             type="button"
             onClick={onDone}
-            className="px-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+            className="px-2 text-sm font-medium text-stone-600 hover:text-stone-900"
           >
             Renunță
           </button>
@@ -146,7 +147,7 @@ function Row({
 
   if (editing) {
     return (
-      <li className="bg-slate-50 px-4 py-4">
+      <li className="rounded-2xl bg-stone-50 px-4 py-4">
         <ItemForm
           table={table}
           item={item}
@@ -159,46 +160,58 @@ function Row({
   }
 
   const detail = item.detail;
+  const iconButton =
+    "rounded-lg p-2 text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-700";
   return (
-    <li className={`flex flex-wrap items-center gap-3 px-4 py-3 ${pending ? "opacity-60" : ""}`}>
-      <div className="flex flex-col">
+    <li className={`group flex items-center gap-2 px-2 py-2.5 sm:px-3 ${pending ? "opacity-60" : ""}`}>
+      <div className="flex flex-col opacity-60 group-hover:opacity-100">
         <button
           type="button"
           aria-label={`Mută ${item.name} mai sus`}
           disabled={first || pending}
           onClick={() => run(() => moveSettingsItem(table, item.id, "up"))}
-          className="px-1 text-xs leading-none text-slate-400 hover:text-slate-800 disabled:invisible"
+          className="rounded p-0.5 text-stone-400 hover:text-stone-800 disabled:invisible"
         >
-          ▲
+          <ChevronUp className="size-4" aria-hidden />
         </button>
         <button
           type="button"
           aria-label={`Mută ${item.name} mai jos`}
           disabled={last || pending}
           onClick={() => run(() => moveSettingsItem(table, item.id, "down"))}
-          className="px-1 text-xs leading-none text-slate-400 hover:text-slate-800 disabled:invisible"
+          className="rounded p-0.5 text-stone-400 hover:text-stone-800 disabled:invisible"
         >
-          ▼
+          <ChevronDown className="size-4" aria-hidden />
         </button>
       </div>
-      <div className="min-w-0 flex-1">
-        <p data-name className={`text-sm font-medium ${item.is_active ? "" : "text-slate-400 line-through"}`}>
+      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1">
+        <p
+          data-name
+          className={`text-sm font-semibold ${item.is_active ? "text-stone-800" : "text-stone-400 line-through"}`}
+        >
           {item.name}
         </p>
-        {detail && <p className="text-xs text-slate-500">{detail}</p>}
+        {detail && (
+          <span className="rounded-full bg-stone-100 px-2 py-0.5 text-xs font-medium text-stone-500">
+            {detail}
+          </span>
+        )}
+        {!item.is_active && <Badge tone="amber">Inactiv</Badge>}
       </div>
-      {!item.is_active && <Badge>Inactiv</Badge>}
-      <div className="flex items-center gap-4">
-        <button
-          type="button"
-          onClick={() => setEditing(true)}
-          className="text-sm font-medium text-brand-700 hover:underline"
-        >
-          Editează
+      <div className="flex items-center">
+        <button type="button" onClick={() => setEditing(true)} className={iconButton} title="Editează">
+          <Pencil className="size-4" aria-hidden />
+          <span className="sr-only">Editează</span>
         </button>
         {item.is_active ? (
           <ConfirmButton
-            label="Dezactivează"
+            label={
+              <>
+                <EyeOff className="size-4" aria-hidden />
+                <span className="sr-only">Dezactivează</span>
+              </>
+            }
+            className={`${iconButton} hover:text-rose-600`}
             title={`Dezactivați ${itemLabel} „${item.name}”?`}
             description="Nu va mai apărea în formulare. Înregistrările existente și rapoartele rămân neschimbate. O puteți reactiva oricând."
             confirmLabel="Dezactivează"
@@ -208,7 +221,7 @@ function Row({
           <button
             type="button"
             onClick={() => run(() => setSettingsItemActive(table, item.id, true))}
-            className="text-sm font-medium text-slate-600 hover:text-slate-900"
+            className="rounded-lg px-2 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-50"
           >
             Reactivează
           </button>
@@ -222,13 +235,13 @@ export function EditableList(props: Props) {
   const { items, table, extraFields, itemLabel } = props;
   return (
     <div className="space-y-4">
-      <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
+      <div className="rounded-2xl bg-stone-50 p-4">
         <ItemForm table={table} extraFields={extraFields} submitLabel={`Adaugă ${itemLabel}`} />
       </div>
       {items.length === 0 ? (
         <EmptyState title="Nu există elemente încă." />
       ) : (
-        <ul className="divide-y divide-slate-100 rounded-xl ring-1 ring-slate-200">
+        <ul className="divide-y divide-stone-100">
           {items.map((item, i) => (
             <Row key={item.id} {...props} item={item} first={i === 0} last={i === items.length - 1} />
           ))}

@@ -28,8 +28,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(url);
   }
   url.pathname =
-    type && SET_PASSWORD_TYPES.includes(type)
-      ? "/reset-password"
-      : safeNextPath(searchParams.get("next"));
+    type && SET_PASSWORD_TYPES.includes(type) ? "/reset-password" : safeNextPath(searchParams.get("next"));
   return NextResponse.redirect(url);
 }

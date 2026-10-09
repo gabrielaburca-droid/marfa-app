@@ -6,7 +6,7 @@ async function adminSession(page: Page) {
   const admin = await newUser("admin-settings");
   await addMember(biz, admin.id, "admin");
   await login(page, admin.email);
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: /^Bună/ })).toBeVisible();
   return { biz, admin };
 }
 
@@ -34,7 +34,9 @@ test("expense categories: add, rename, deactivate, reactivate", async ({ page })
   const names = () => card.getByRole("listitem").locator("[data-name]").allTextContents();
   expect((await names()).indexOf("Viniete")).toBe((await names()).indexOf("Taxe de drum") + 1);
   await card.getByRole("button", { name: "Mută Viniete mai sus" }).click();
-  await expect.poll(async () => (await names()).indexOf("Viniete") < (await names()).indexOf("Taxe de drum")).toBe(true);
+  await expect
+    .poll(async () => (await names()).indexOf("Viniete") < (await names()).indexOf("Taxe de drum"))
+    .toBe(true);
 
   await card.getByLabel("Nume").first().fill("Asigurare auto");
   await card.getByLabel("Grupă").first().selectOption({ label: "Transport, combustibil și import" });
@@ -129,7 +131,7 @@ test("invite an operator, who sets a password; deactivation blocks login; histor
   await operator.getByLabel("Parolă nouă").fill("Parola-Maria-2026");
   await operator.getByLabel("Confirmați parola").fill("Parola-Maria-2026");
   await operator.getByRole("button", { name: "Salvează parola" }).click();
-  await expect(operator.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(operator.getByRole("heading", { level: 1, name: /^Bună/ })).toBeVisible();
   const nav = operator.getByRole("navigation", { name: "Navigare principală" }).first();
   await expect(nav.getByRole("link", { name: "Setări" })).toHaveCount(0);
   await operator.goto("/setari/utilizatori");
@@ -155,7 +157,7 @@ test("invite an operator, who sets a password; deactivation blocks login; histor
   await row.getByRole("button", { name: "Reactivează" }).click();
   await expectToast(page, "Utilizatorul a fost reactivat.");
   await login(operator, email, "Parola-Maria-2026");
-  await expect(operator.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(operator.getByRole("heading", { level: 1, name: /^Bună/ })).toBeVisible();
   await expect(nav.getByRole("link", { name: "Rapoarte" })).toBeVisible();
 
   // The admin cannot deactivate or demote themselves.
@@ -174,7 +176,7 @@ test("operators cannot open any settings page", async ({ page }) => {
   const op = await newUser("operator-settings");
   await addMember(biz, op.id, "operator", true);
   await login(page, op.email);
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: /^Bună/ })).toBeVisible();
   for (const path of [
     "/setari",
     "/setari/utilizatori",

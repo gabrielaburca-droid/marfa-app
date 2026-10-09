@@ -71,9 +71,9 @@ export function RatesTable({ rates }: { rates: Rate[] }) {
       </EmptyState>
     );
   return (
-    <div className="overflow-x-auto rounded-xl ring-1 ring-slate-200">
+    <div className="overflow-x-auto -mx-1">
       <table className="w-full text-sm">
-        <thead className="bg-slate-50 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+        <thead className="text-left text-xs font-semibold text-stone-400">
           <tr>
             <th className="px-4 py-2">Data</th>
             <th className="px-4 py-2">Valută</th>
@@ -82,7 +82,7 @@ export function RatesTable({ rates }: { rates: Rate[] }) {
             <th className="px-4 py-2" />
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-stone-100">
           {rates.map((r) => (
             <tr key={r.id}>
               <td className="px-4 py-2 tabular">{formatDate(r.rate_date)}</td>

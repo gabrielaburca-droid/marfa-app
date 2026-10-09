@@ -31,7 +31,7 @@ export default async function RatesPage() {
         {currencies.length > 0 ? (
           <RateForm currencies={currencies} today={todayRO()} />
         ) : (
-          <p className="text-sm text-slate-500">Alegeți întâi valutele folosite în Setări → Firmă.</p>
+          <p className="text-sm text-stone-500">Alegeți întâi valutele folosite în Setări → Firmă.</p>
         )}
         <RatesTable rates={rates ?? []} />
       </div>
