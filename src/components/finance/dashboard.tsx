@@ -51,8 +51,8 @@ export function KpiCard({
       {featured && <span className="absolute inset-x-0 top-0 h-1 bg-gold-500" aria-hidden />}
       <div className="flex items-center justify-between">
         <p className="text-sm font-semibold text-stone-600">{label}</p>
-        <span className={`flex size-9 items-center justify-center rounded-xl ${chip}`}>
-          <Icon className="size-[18px]" aria-hidden />
+        <span className={`flex size-10 items-center justify-center rounded-xl ${chip}`}>
+          <Icon className="size-[18px]" strokeWidth={1.75} aria-hidden />
         </span>
       </div>
       <p

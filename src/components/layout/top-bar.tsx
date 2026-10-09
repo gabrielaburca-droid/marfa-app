@@ -4,7 +4,7 @@ import { ChevronDown, History, LogOut, Plus, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Logo } from "@/components/ui/logo";
+import { ShopLogo } from "@/components/ui/logo";
 import { QuickGrid } from "./nav-links";
 import { sectionTitle } from "./nav-items";
 
@@ -144,7 +144,7 @@ export function TopBar({ profile, signOut }: { profile: Profile; signOut: () => 
     <header className="sticky top-0 z-20 border-b border-stone-200/80 bg-canvas/90 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-10">
         <div className="min-w-0 lg:hidden">
-          <Logo name={profile.businessName} />
+          <ShopLogo className="w-[140px]" priority />
         </div>
         <p className="hidden min-w-0 truncate text-sm text-stone-500 lg:block">
           {profile.businessName}

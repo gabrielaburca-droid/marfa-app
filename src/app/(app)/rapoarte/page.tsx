@@ -49,7 +49,7 @@ export default async function Page({ searchParams }: PageProps<"/rapoarte">) {
             <tbody className="divide-y divide-stone-100">
               <tr>
                 <td className={`${cell} pl-0`}>Intrări ({report.income_count})</td>
-                <td className={`${cell} pr-0 text-right font-semibold text-brand-700 tabular`}>
+                <td className={`${cell} pr-0 text-right font-semibold text-stone-900 tabular`}>
                   {formatRON(report.income)}
                 </td>
               </tr>
@@ -66,7 +66,7 @@ export default async function Page({ searchParams }: PageProps<"/rapoarte">) {
               <tr>
                 <td className={`${cell} pl-0 font-bold text-stone-900`}>Rezultat estimat</td>
                 <td
-                  className={`${cell} pr-0 text-right font-extrabold tabular ${report.result.startsWith("-") ? "text-rose-600" : "text-brand-700"}`}
+                  className={`${cell} pr-0 text-right font-extrabold tabular ${report.result.startsWith("-") ? "text-rose-600" : "text-stone-900"}`}
                 >
                   {formatRON(report.result)}
                 </td>

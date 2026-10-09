@@ -3,10 +3,10 @@ import {
   ArrowUpRight,
   ChartNoAxesColumn,
   Fuel,
+  Globe,
   House,
   ReceiptText,
   Settings2,
-  ShoppingBag,
   Store,
   type LucideIcon,
 } from "lucide-react";
@@ -23,7 +23,7 @@ export const NAV_ICONS: Record<NavIcon, LucideIcon> = {
 
 export const QUICK_ICONS: Record<QuickAction["icon"], LucideIcon> = {
   market: Store,
-  online: ShoppingBag,
+  online: Globe,
   expense: ReceiptText,
   fuel: Fuel,
 };

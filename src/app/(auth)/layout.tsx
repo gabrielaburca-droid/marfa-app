@@ -1,5 +1,5 @@
 import { ChartNoAxesColumn, Store, Wallet } from "lucide-react";
-import { LogoMark } from "@/components/ui/logo";
+import { LogoMark, ShopLogo } from "@/components/ui/logo";
 
 const POINTS = [
   { icon: Store, text: "Totalul unei zile de târg, într-un singur pas" },
@@ -41,10 +41,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       <div className="flex items-center justify-center px-4 py-12 sm:px-8">
         <div className="w-full max-w-sm">
-          <div className="mb-8 flex flex-col items-center text-center lg:hidden">
-            <LogoMark className="size-14" />
-            <p className="mt-4 text-xl font-bold tracking-tight text-stone-900">Marfa</p>
-            <p className="helper">Încasări și cheltuieli, simplu.</p>
+          <div className="mb-8 flex flex-col items-center text-center">
+            <ShopLogo className="w-56" priority />
+            <p className="helper mt-3 lg:hidden">Marfa · încasări și cheltuieli, simplu.</p>
           </div>
           <div className="surface p-6 sm:p-8">{children}</div>
         </div>

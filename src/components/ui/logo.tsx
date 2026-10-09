@@ -1,3 +1,6 @@
+import Image from "next/image";
+import logo from "../../../public/brand/sunflower-stories.png";
+
 /**
  * Marfa product mark: a parcel with a gold coin. This is the app's own
  * identity; a shop logo, when provided, is shown separately next to it.
@@ -36,5 +39,22 @@ export function Logo({ name, compact = false }: { name?: string; compact?: boole
         </div>
       )}
     </div>
+  );
+}
+
+/**
+ * The shop's own logo (Sunflower Stories), kept separate from the Marfa mark.
+ * The PNG has a transparent background and is only ever scaled by width so
+ * its proportions stay intact.
+ */
+export function ShopLogo({ className = "w-44", priority = false }: { className?: string; priority?: boolean }) {
+  return (
+    <Image
+      src={logo}
+      alt="Sunflower Stories"
+      sizes="(min-width: 1024px) 200px, 140px"
+      priority={priority}
+      className={`h-auto max-w-full ${className}`}
+    />
   );
 }

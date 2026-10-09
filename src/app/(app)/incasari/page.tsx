@@ -1,4 +1,4 @@
-import { ShoppingBag, Store } from "lucide-react";
+import { Globe, Store } from "lucide-react";
 import Link from "next/link";
 import { DeleteEntry } from "@/components/finance/delete-entry";
 import { IncomeItem } from "@/components/finance/entry-rows";
@@ -48,7 +48,7 @@ export default async function Page({ searchParams }: PageProps<"/incasari">) {
         actions={
           <div className="flex flex-wrap gap-2">
             <Link href={`${here}&nou=online`} className={buttonClass("secondary")} scroll={false}>
-              <ShoppingBag className="size-4" aria-hidden />
+              <Globe className="size-4" aria-hidden />
               Vânzare
             </Link>
             <Link href={`${here}&nou=targ`} className={buttonClass("primary")} scroll={false}>
@@ -66,7 +66,7 @@ export default async function Page({ searchParams }: PageProps<"/incasari">) {
           <h2 className="font-bold text-stone-900">
             {entries.income.length} {entries.income.length === 1 ? "intrare" : "intrări"}
           </h2>
-          <p className="text-xl font-extrabold text-brand-700 tabular">{formatRON(report.income)}</p>
+          <p className="text-xl font-extrabold text-stone-900 tabular">{formatRON(report.income)}</p>
         </div>
         {entries.income.length === 0 ? (
           <div className="mt-4">

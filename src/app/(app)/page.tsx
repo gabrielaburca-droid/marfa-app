@@ -105,12 +105,12 @@ export default async function DashboardPage({ searchParams }: PageProps<"/">) {
               <li key={a.href}>
                 <Link
                   href={a.href}
-                  className="group flex h-full items-center gap-3 rounded-2xl border border-stone-200 bg-white px-4 py-3 transition hover:border-stone-300 hover:shadow-soft"
+                  className="group flex h-full items-center gap-3 rounded-[var(--radius-card)] border border-stone-200 bg-white px-4 py-3.5 shadow-soft transition hover:border-stone-300 hover:shadow-[var(--shadow-lift)]"
                 >
                   <span
                     className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${TONES[a.tone]}`}
                   >
-                    <Icon className="size-5" aria-hidden />
+                    <Icon className="size-[18px]" strokeWidth={1.75} aria-hidden />
                   </span>
                   <span className="min-w-0">
                     <span className="block text-sm font-semibold text-stone-900">{a.title}</span>

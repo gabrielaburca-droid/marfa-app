@@ -22,8 +22,9 @@
   --color-stone-500: #776d63;
   --color-stone-600: #62584f;
   --color-stone-700: #4d433b;
-  --color-stone-800: #3f352e;
-  --color-stone-900: #332a24;
+  --color-stone-800: #2b2724;
+  /* Primary text and amounts: near-black, not green. */
+  --color-stone-900: #171717;
 
   --color-brand-50: #f4f5ef;
   --color-brand-100: #e6e9dc;

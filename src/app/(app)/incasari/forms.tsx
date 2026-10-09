@@ -218,7 +218,7 @@ export function SaleForm({
         </details>
         {net !== null && (
           <p
-            className={`rounded-2xl px-4 py-3 text-sm font-semibold ${net >= 0 ? "bg-brand-50 text-brand-800" : "bg-amber-50 text-amber-800"}`}
+            className={`rounded-2xl px-4 py-3 text-sm font-semibold ${net >= 0 ? "bg-stone-100 text-stone-900" : "bg-amber-50 text-amber-800"}`}
             aria-live="polite"
           >
             Rămâne: {formatRON(net)}

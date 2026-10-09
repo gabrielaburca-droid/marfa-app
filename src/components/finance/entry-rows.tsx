@@ -1,4 +1,4 @@
-import { Fuel, ReceiptText, ShoppingBag, Store } from "lucide-react";
+import { Fuel, Globe, ReceiptText, Store, UserRound } from "lucide-react";
 import { Badge } from "@/components/ui/card";
 import type { ExpenseRow, IncomeRow } from "@/lib/finance/report";
 import { formatDate, formatMoney, formatNumber, formatRON } from "@/lib/format";
@@ -7,8 +7,13 @@ const rowClass = "flex items-center gap-3 border-t border-stone-100 py-3 first:b
 const iconClass = "flex size-10 shrink-0 items-center justify-center rounded-xl";
 
 export function IncomeItem({ e, action }: { e: IncomeRow; action?: React.ReactNode }) {
-  const market = e.channel?.kind === "market";
-  const Icon = market ? Store : ShoppingBag;
+  const kind = e.channel?.kind ?? "other";
+  // Markets, online platforms and direct customers each get their own icon.
+  const { Icon, tone } = {
+    market: { Icon: Store, tone: "bg-brand-50 text-brand-700" },
+    online: { Icon: Globe, tone: "bg-sky-50 text-sky-700" },
+    other: { Icon: UserRound, tone: "bg-stone-100 text-stone-600" },
+  }[kind];
   const sale = e.entry_kind === "sale";
   const title = sale ? e.product_name || "Vânzare" : (e.channel?.name ?? "Încasare");
   const period =
@@ -28,15 +33,15 @@ export function IncomeItem({ e, action }: { e: IncomeRow; action?: React.ReactNo
   const deducted = Number(e.gross_amount_ron) !== Number(e.net_amount_ron);
   return (
     <li className={rowClass}>
-      <span className={`${iconClass} ${market ? "bg-brand-50 text-brand-700" : "bg-sky-50 text-sky-600"}`}>
-        <Icon className="size-[18px]" aria-hidden />
+      <span className={`${iconClass} ${tone}`}>
+        <Icon className="size-[18px]" strokeWidth={1.75} aria-hidden />
       </span>
       <div className="min-w-0 flex-1">
         <p className="flex min-w-0 items-center gap-2 text-sm font-semibold text-stone-900">
           <span className="truncate" data-name>
             {title}
           </span>
-          {!sale && <Badge tone="green">total zi</Badge>}
+          {!sale && <Badge>total zi</Badge>}
         </p>
         <p className="truncate text-xs text-stone-500">{meta}</p>
       </div>
@@ -58,7 +63,7 @@ export function ExpenseItem({ e, action }: { e: ExpenseRow; action?: React.React
   return (
     <li className={rowClass}>
       <span className={`${iconClass} ${fuel ? "bg-amber-50 text-amber-700" : "bg-rose-50 text-rose-700"}`}>
-        <Icon className="size-[18px]" aria-hidden />
+        <Icon className="size-[18px]" strokeWidth={1.75} aria-hidden />
       </span>
       <div className="min-w-0 flex-1">
         <p className="flex min-w-0 items-center gap-2 text-sm font-semibold text-stone-900">

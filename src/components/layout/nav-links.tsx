@@ -4,7 +4,7 @@ import { ChevronsLeft, ChevronsRight, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Logo } from "@/components/ui/logo";
+import { LogoMark, ShopLogo } from "@/components/ui/logo";
 import { NAV_ICONS, QUICK_ICONS, TONES } from "./icons";
 import { isActive, type NavGroup, type NavItem } from "./nav-items";
 import { QUICK_ACTIONS } from "./quick-actions";
@@ -45,9 +45,21 @@ export function Sidebar({
         collapsed ? "w-[76px] px-3" : "w-64 px-4"
       }`}
     >
-      <div className={collapsed ? "flex justify-center" : "px-2"}>
-        <Logo name={businessName} compact={collapsed} />
-      </div>
+      {collapsed ? (
+        <div className="flex justify-center" title={businessName}>
+          <LogoMark className="size-9" />
+        </div>
+      ) : (
+        <div className="px-2">
+          <ShopLogo className="w-full max-w-[200px]" priority />
+          <p className="mt-3 flex items-center gap-1.5 border-t border-stone-100 pt-3 text-xs text-stone-500">
+            <LogoMark className="size-4 shrink-0" />
+            <span className="font-semibold text-stone-700">Marfa</span>
+            <span aria-hidden>·</span>
+            <span className="truncate">{businessName}</span>
+          </p>
+        </div>
+      )}
 
       <nav aria-label="Navigare principală" className="mt-8 flex-1 space-y-6">
         {groups.map(([group, list]) => (
@@ -83,7 +95,7 @@ export function Sidebar({
                       )}
                       <Icon
                         className={`size-[18px] shrink-0 ${active ? "text-brand-700" : "text-stone-400 group-hover:text-stone-600"}`}
-                        strokeWidth={2}
+                        strokeWidth={1.75}
                         aria-hidden
                       />
                       <span className={collapsed ? "sr-only" : ""}>{item.label}</span>
@@ -205,7 +217,7 @@ export function QuickGrid({ onPick }: { onPick?: () => void }) {
               className="flex h-full flex-col gap-3 rounded-2xl bg-stone-50 p-4 transition-colors hover:bg-stone-100"
             >
               <span className={`flex size-10 items-center justify-center rounded-xl ${TONES[a.tone]}`}>
-                <Icon className="size-5" aria-hidden />
+                <Icon className="size-[18px]" strokeWidth={1.75} aria-hidden />
               </span>
               <span>
                 <span className="block text-sm font-semibold text-stone-800">{a.title}</span>
