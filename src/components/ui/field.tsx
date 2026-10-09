@@ -8,6 +8,7 @@ export function Field({
   name,
   errors,
   hint,
+  id,
   ...props
 }: InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -15,14 +16,15 @@ export function Field({
   errors?: string[];
   hint?: string;
 }) {
-  const errorId = errors?.length ? `${name}-error` : undefined;
+  const inputId = id ?? name;
+  const errorId = errors?.length ? `${inputId}-error` : undefined;
   return (
     <div className="space-y-1.5">
-      <label htmlFor={name} className="block text-sm font-medium text-slate-700">
+      <label htmlFor={inputId} className="block text-sm font-medium text-slate-700">
         {label}
       </label>
       <input
-        id={name}
+        id={inputId}
         name={name}
         className={inputClass}
         aria-invalid={Boolean(errorId)}

@@ -70,4 +70,4 @@ Migrațiile sunt în `supabase/migrations/` și se aplică în ordine.
 
 ## Stare
 
-Etapa 1 (proiect, schemă, RLS, audit, autentificare) este gata și testată pe un Supabase local. Restul etapelor sunt în [docs/PLAN.md](docs/PLAN.md). Publicarea online nu a fost încă făcută.
+Etapele 1 (proiect, schemă, RLS, audit, autentificare) și 2 (setări, utilizatori, istoric) sunt gata și testate pe un Supabase local. Restul etapelor sunt în [docs/PLAN.md](docs/PLAN.md). Publicarea online nu a fost încă făcută.

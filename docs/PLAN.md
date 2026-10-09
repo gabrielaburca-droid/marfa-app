@@ -100,8 +100,8 @@ Nu se calculează profit pe produs sau pe categorie de produs și nu se inventea
 | Etapă | Conținut | Stare |
 |---|---|---|
 | 1 | Proiect, schema Supabase + RLS + audit, autentificare (login, logout, resetare parolă), structura aplicației | **gata, testată local** |
-| 2 | Setări: utilizatori (invitare, rol, dezactivare), categorii, canale, locații, cursuri, date firmă | următoarea |
-| 3 | Încasări și Cheltuieli: formulare rapide, listă, căutare, editare, ștergere cu confirmare, atașamente | |
+| 2 | Setări: utilizatori (invitare, rol, dezactivare), categorii, canale, locații, cursuri, date firmă, istoric modificări | **gata, testată local** (preluarea cursului BNR nu a putut fi testată live) |
+| 3 | Încasări și Cheltuieli: formulare rapide, listă, căutare, editare, ștergere cu confirmare, atașamente | următoarea |
 | 4 | Dashboard: filtre de perioadă, indicatori, comparații, grafic lunar | |
 | 5 | Rapoarte și export CSV/Excel | |
 | 6 | Publicare pe Vercel + Supabase, verificare finală | |

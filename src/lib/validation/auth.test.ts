@@ -28,7 +28,11 @@ describe("signInSchema", () => {
 describe("newPasswordSchema", () => {
   it("requires 10 characters and matching confirmation", () => {
     expect(newPasswordSchema.safeParse({ password: "scurta", confirm: "scurta" }).success).toBe(false);
-    expect(newPasswordSchema.safeParse({ password: "o-parola-buna", confirm: "alta-parola-1" }).success).toBe(false);
-    expect(newPasswordSchema.safeParse({ password: "o-parola-buna", confirm: "o-parola-buna" }).success).toBe(true);
+    expect(newPasswordSchema.safeParse({ password: "o-parola-buna", confirm: "alta-parola-1" }).success).toBe(
+      false,
+    );
+    expect(newPasswordSchema.safeParse({ password: "o-parola-buna", confirm: "o-parola-buna" }).success).toBe(
+      true,
+    );
   });
 });

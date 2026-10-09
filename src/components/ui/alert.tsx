@@ -5,7 +5,10 @@ export function Alert({ tone, children }: { tone: "error" | "success" | "info"; 
     info: "bg-slate-100 text-slate-700 ring-slate-200",
   }[tone];
   return (
-    <div role={tone === "error" ? "alert" : "status"} className={`rounded-lg px-4 py-3 text-sm ring-1 ${styles}`}>
+    <div
+      role={tone === "error" ? "alert" : "status"}
+      className={`rounded-lg px-4 py-3 text-sm ring-1 ${styles}`}
+    >
       {children}
     </div>
   );

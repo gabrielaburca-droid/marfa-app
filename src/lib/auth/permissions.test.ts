@@ -7,13 +7,25 @@ const reporter = { role: "operator" as const, canViewReports: true };
 
 describe("can", () => {
   it("lets admins do everything", () => {
-    for (const p of ["users.manage", "settings.manage", "records.delete", "reports.view", "audit.view"] as const) {
+    for (const p of [
+      "users.manage",
+      "settings.manage",
+      "records.delete",
+      "reports.view",
+      "audit.view",
+    ] as const) {
       expect(can(admin, p)).toBe(true);
     }
   });
 
   it("keeps operators out of administration and deletion", () => {
-    for (const p of ["users.manage", "settings.manage", "records.delete", "records.editAny", "audit.view"] as const) {
+    for (const p of [
+      "users.manage",
+      "settings.manage",
+      "records.delete",
+      "records.editAny",
+      "audit.view",
+    ] as const) {
       expect(can(operator, p)).toBe(false);
       expect(can(reporter, p)).toBe(false);
     }

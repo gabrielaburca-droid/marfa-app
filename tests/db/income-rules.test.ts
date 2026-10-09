@@ -1,6 +1,13 @@
 import { randomUUID } from "node:crypto";
 import { beforeAll, describe, expect, it } from "vitest";
-import { addMember, channelId, createBusiness, createUser, expenseCategoryId, type TestUser } from "./helpers";
+import {
+  addMember,
+  channelId,
+  createBusiness,
+  createUser,
+  expenseCategoryId,
+  type TestUser,
+} from "./helpers";
 
 let biz: string;
 let admin: TestUser;
@@ -38,8 +45,18 @@ describe("aggregate market income", () => {
   });
 
   it("allows several entries for the same day and location", async () => {
-    const a = await income({ entry_kind: "aggregate", entry_date: "2026-10-12", channel_id: ch["Târg Bacău"], gross_amount: 1000 });
-    const b = await income({ entry_kind: "aggregate", entry_date: "2026-10-12", channel_id: ch["Târg Bacău"], gross_amount: 2000 });
+    const a = await income({
+      entry_kind: "aggregate",
+      entry_date: "2026-10-12",
+      channel_id: ch["Târg Bacău"],
+      gross_amount: 1000,
+    });
+    const b = await income({
+      entry_kind: "aggregate",
+      entry_date: "2026-10-12",
+      channel_id: ch["Târg Bacău"],
+      gross_amount: 2000,
+    });
     expect(a.error).toBeNull();
     expect(b.error).toBeNull();
   });
@@ -115,7 +132,13 @@ describe("online sales", () => {
   });
 
   it("rejects discounts larger than the price", async () => {
-    const { error } = await income({ entry_kind: "sale", entry_date: "2026-10-06", channel_id: ch["OLX"], gross_amount: 10, discount_amount: 11 });
+    const { error } = await income({
+      entry_kind: "sale",
+      entry_date: "2026-10-06",
+      channel_id: ch["OLX"],
+      gross_amount: 10,
+      discount_amount: 11,
+    });
     expect(error?.code).toBe("23514");
   });
 });
@@ -123,22 +146,51 @@ describe("online sales", () => {
 describe("duplicate prevention", () => {
   it("ignores a double-submitted form (same client token)", async () => {
     const token = randomUUID();
-    const first = await income({ entry_kind: "aggregate", entry_date: "2026-10-14", channel_id: ch["Târg Bacău"], gross_amount: 10, client_token: token });
-    const second = await income({ entry_kind: "aggregate", entry_date: "2026-10-14", channel_id: ch["Târg Bacău"], gross_amount: 10, client_token: token });
+    const first = await income({
+      entry_kind: "aggregate",
+      entry_date: "2026-10-14",
+      channel_id: ch["Târg Bacău"],
+      gross_amount: 10,
+      client_token: token,
+    });
+    const second = await income({
+      entry_kind: "aggregate",
+      entry_date: "2026-10-14",
+      channel_id: ch["Târg Bacău"],
+      gross_amount: 10,
+      client_token: token,
+    });
     expect(first.error).toBeNull();
     expect(second.error?.code).toBe("23505");
   });
 
   it("rejects the same order reference twice on a channel", async () => {
     const ref = `OLX-${randomUUID().slice(0, 6)}`;
-    const first = await income({ entry_kind: "sale", entry_date: "2026-10-07", channel_id: ch["OLX"], gross_amount: 50, reference: ref });
-    const second = await income({ entry_kind: "sale", entry_date: "2026-10-08", channel_id: ch["OLX"], gross_amount: 50, reference: ref.toLowerCase() });
+    const first = await income({
+      entry_kind: "sale",
+      entry_date: "2026-10-07",
+      channel_id: ch["OLX"],
+      gross_amount: 50,
+      reference: ref,
+    });
+    const second = await income({
+      entry_kind: "sale",
+      entry_date: "2026-10-08",
+      channel_id: ch["OLX"],
+      gross_amount: 50,
+      reference: ref.toLowerCase(),
+    });
     expect(first.error).toBeNull();
     expect(second.error?.code).toBe("23505");
   });
 
   it("rejects an aggregate over a period that already has individual sales", async () => {
-    await income({ entry_kind: "sale", entry_date: "2026-09-10", channel_id: ch["Vinted"], gross_amount: 30 });
+    await income({
+      entry_kind: "sale",
+      entry_date: "2026-09-10",
+      channel_id: ch["Vinted"],
+      gross_amount: 30,
+    });
     const { error } = await income({
       entry_kind: "aggregate",
       entry_date: "2026-09-30",
@@ -161,18 +213,43 @@ describe("duplicate prevention", () => {
       gross_amount: 2500,
     });
     expect(agg.error).toBeNull();
-    const { error } = await income({ entry_kind: "sale", entry_date: "2026-08-15", channel_id: ch["OLX"], gross_amount: 40 });
+    const { error } = await income({
+      entry_kind: "sale",
+      entry_date: "2026-08-15",
+      channel_id: ch["OLX"],
+      gross_amount: 40,
+    });
     expect(error?.code).toBe("23P01");
 
     // Another channel on the same day is fine.
-    const other = await income({ entry_kind: "sale", entry_date: "2026-08-15", channel_id: ch["Vinted"], gross_amount: 40 });
+    const other = await income({
+      entry_kind: "sale",
+      entry_date: "2026-08-15",
+      channel_id: ch["Vinted"],
+      gross_amount: 40,
+    });
     expect(other.error).toBeNull();
   });
 
   it("allows the sale again once the conflicting aggregate is deleted", async () => {
-    const agg = await income({ entry_kind: "aggregate", entry_date: "2026-07-31", period_start: "2026-07-01", period_end: "2026-07-31", channel_id: ch["Vinted"], gross_amount: 100 });
-    await admin.client.from("income_entries").update({ deleted_at: new Date().toISOString() }).eq("id", agg.data.id);
-    const { error } = await income({ entry_kind: "sale", entry_date: "2026-07-15", channel_id: ch["Vinted"], gross_amount: 40 });
+    const agg = await income({
+      entry_kind: "aggregate",
+      entry_date: "2026-07-31",
+      period_start: "2026-07-01",
+      period_end: "2026-07-31",
+      channel_id: ch["Vinted"],
+      gross_amount: 100,
+    });
+    await admin.client
+      .from("income_entries")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", agg.data.id);
+    const { error } = await income({
+      entry_kind: "sale",
+      entry_date: "2026-07-15",
+      channel_id: ch["Vinted"],
+      gross_amount: 40,
+    });
     expect(error).toBeNull();
   });
 });

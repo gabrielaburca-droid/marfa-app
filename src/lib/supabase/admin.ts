@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { publicEnv } from "@/lib/env";
+import type { Database } from "./database.types";
 
 /**
  * Service-role client. Bypasses RLS, so only call it after the caller has
@@ -9,7 +10,7 @@ import { publicEnv } from "@/lib/env";
 export function createAdminClient() {
   const secret = process.env.SUPABASE_SECRET_KEY;
   if (!secret) throw new Error("SUPABASE_SECRET_KEY is not configured");
-  return createClient(publicEnv.NEXT_PUBLIC_SUPABASE_URL, secret, {
+  return createClient<Database>(publicEnv.NEXT_PUBLIC_SUPABASE_URL, secret, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }

@@ -93,7 +93,10 @@ describe("business data isolation", () => {
 
   it("a record cannot be moved to another business", async () => {
     const { data } = await addIncome(w.adminA.client, w.bizA, 50);
-    const { error } = await w.adminA.client.from("income_entries").update({ business_id: w.bizB }).eq("id", data!.id);
+    const { error } = await w.adminA.client
+      .from("income_entries")
+      .update({ business_id: w.bizB })
+      .eq("id", data!.id);
     expect(error).not.toBeNull();
   });
 
@@ -126,8 +129,14 @@ describe("roles", () => {
 
   it("operators see only their own records unless granted report access", async () => {
     const adminEntry = await addIncome(w.adminA.client, w.bizA, 777);
-    const asOperator = await w.operatorA.client.from("income_entries").select("id").eq("id", adminEntry.data!.id);
-    const asReporter = await w.reporterA.client.from("income_entries").select("id").eq("id", adminEntry.data!.id);
+    const asOperator = await w.operatorA.client
+      .from("income_entries")
+      .select("id")
+      .eq("id", adminEntry.data!.id);
+    const asReporter = await w.reporterA.client
+      .from("income_entries")
+      .select("id")
+      .eq("id", adminEntry.data!.id);
     expect(asOperator.data).toEqual([]);
     expect(asReporter.data).toHaveLength(1);
   });
@@ -157,7 +166,10 @@ describe("roles", () => {
     const hard = await w.operatorA.client.from("income_entries").delete().eq("id", id);
     expect(hard.error?.code).toBe("42501");
 
-    const soft = await w.operatorA.client.from("income_entries").update({ deleted_at: new Date().toISOString() }).eq("id", id);
+    const soft = await w.operatorA.client
+      .from("income_entries")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", id);
     expect(soft.error?.code).toBe("42501");
 
     const adminHard = await w.adminA.client.from("income_entries").delete().eq("id", id);
@@ -253,7 +265,10 @@ describe("audit log", () => {
     expect(data?.[1].actor_id).toBe(w.operatorA.id);
     expect(data?.[1].changes.gross_amount).toEqual({ old: 400, new: 450 });
 
-    const asOperator = await w.operatorA.client.from("audit_logs").select("id").eq("entity_id", entry.data!.id);
+    const asOperator = await w.operatorA.client
+      .from("audit_logs")
+      .select("id")
+      .eq("entity_id", entry.data!.id);
     expect(asOperator.data).toEqual([]);
 
     const forge = await w.adminA.client
@@ -266,10 +281,14 @@ describe("audit log", () => {
 describe("attachments storage", () => {
   it("members upload to their business folder only", async () => {
     const file = new Blob(["%PDF-1.4 test"], { type: "application/pdf" });
-    const own = await w.operatorA.client.storage.from("attachments").upload(`${w.bizA}/bon-${Date.now()}.pdf`, file);
+    const own = await w.operatorA.client.storage
+      .from("attachments")
+      .upload(`${w.bizA}/bon-${Date.now()}.pdf`, file);
     expect(own.error).toBeNull();
 
-    const foreign = await w.operatorA.client.storage.from("attachments").upload(`${w.bizB}/bon-${Date.now()}.pdf`, file);
+    const foreign = await w.operatorA.client.storage
+      .from("attachments")
+      .upload(`${w.bizB}/bon-${Date.now()}.pdf`, file);
     expect(foreign.error).not.toBeNull();
 
     const read = await w.adminB.client.storage.from("attachments").download(own.data!.path);
