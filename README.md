@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Marfa – evidență financiară
 
-## Getting Started
+Aplicație web pentru evidența încasărilor și cheltuielilor unei firme care vinde la târguri (Bacău, Suceava) și online. Planul, schema și regulile de calcul sunt în [docs/PLAN.md](docs/PLAN.md).
 
-First, run the development server:
+Stack: Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (PostgreSQL, Auth, RLS, Storage) · Zod · Vitest · Playwright.
+
+## Rulare locală
+
+Cerințe: Node 22+, Docker (pentru Supabase local).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npx supabase start            # pornește Postgres, Auth, Storage, Mailpit; aplică migrațiile
+cp .env.example .env.local    # completați cheile afișate de `supabase start`
+npm run create-admin -- --business "Firma SRL" --email admin@firma.ro --name "Nume" --password 'minim-10-caractere'
+npm run dev                   # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Emailurile locale (resetare parolă, invitații) se văd în Mailpit: http://127.0.0.1:54324.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Variabile de mediu
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variabilă | Unde | Descriere |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | browser + server | URL-ul proiectului Supabase |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | browser + server | Cheia publică (publishable/anon). Accesul la date e controlat de RLS |
+| `NEXT_PUBLIC_SITE_URL` | browser + server | Adresa publică a aplicației, folosită în emailuri |
+| `SUPABASE_SECRET_KEY` | **doar server** | Cheia secretă (service role). Nu primește niciodată prefixul `NEXT_PUBLIC_` |
 
-## Learn More
+## Teste și verificări
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint          # ESLint
+npm run typecheck     # TypeScript
+npm test              # teste unitare
+npm run test:db       # RLS, roluri, izolarea între firme, reguli financiare (necesită `supabase start`)
+npm run build && npm run test:e2e   # login, logout, resetare parolă, acces pe roluri, în browser
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`test:db` și `test:e2e` creează utilizatori și firme de test în baza locală. Nu le rulați pe baza de producție.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Migrații
 
-## Deploy on Vercel
+Migrațiile sunt în `supabase/migrations/` și se aplică în ordine.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Local: `npx supabase db reset` (recreează baza și aplică toate migrațiile).
+- Producție: `npx supabase link --project-ref <ref>` apoi `npx supabase db push`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Configurare Supabase (proiect online)
+
+1. Creați un proiect în regiunea **Frankfurt (eu-central-1)**.
+2. Aplicați migrațiile (`supabase link` + `supabase db push`). Bucket-ul privat `attachments` este creat de migrație.
+3. **Authentication → Sign In / Providers**: dezactivați „Allow new users to sign up”. Lăsați Email activ. Parolă minimă: 10 caractere.
+4. **Authentication → URL Configuration**: Site URL = adresa Vercel (ex. `https://marfa.vercel.app`); adăugați `https://marfa.vercel.app/**` la Redirect URLs.
+5. **Authentication → Emails → Templates**: copiați conținutul din `supabase/templates/recovery.html` (Reset password) și `supabase/templates/invite.html` (Invite user). Link-urile trec prin `/auth/confirm`.
+6. **Authentication → Emails → SMTP**: configurați un SMTP propriu (ex. Resend, Brevo). Serverul implicit Supabase trimite doar câteva emailuri pe oră.
+7. Creați primul administrator: `npm run create-admin` cu `.env.local` setat pe proiectul online.
+
+## Publicare pe Vercel
+
+1. Importați repository-ul în Vercel (framework: Next.js, fără setări speciale).
+2. Adăugați cele 4 variabile de mai sus în Settings → Environment Variables (Production și Preview). `SUPABASE_SECRET_KEY` doar ca variabilă server (fără `NEXT_PUBLIC_`).
+3. Deploy. Actualizați Site URL în Supabase dacă domeniul s-a schimbat.
+
+## Copii de siguranță
+
+- Supabase Pro face backup zilnic automat (7 zile); Point-in-Time Recovery se poate activa separat.
+- Pe planul gratuit nu există backup descărcabil: rulați periodic `npx supabase db dump --data-only -f backup-AAAA-LL-ZZ.sql` și păstrați fișierul în afara Supabase.
+- Fișierele din Storage nu sunt incluse în dump-ul bazei; descărcați-le separat dacă e nevoie.
+
+## Stare
+
+Etapa 1 (proiect, schemă, RLS, audit, autentificare) este gata și testată pe un Supabase local. Restul etapelor sunt în [docs/PLAN.md](docs/PLAN.md). Publicarea online nu a fost încă făcută.
