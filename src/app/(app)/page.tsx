@@ -1,14 +1,23 @@
 import Link from "next/link";
 import { QUICK_ICONS, TONES } from "@/components/layout/icons";
 import { QUICK_ACTIONS } from "@/components/layout/quick-actions";
+import { MonthReportCard } from "@/components/finance/month-report";
 import { Alert } from "@/components/ui/alert";
 import { can } from "@/lib/auth/permissions";
 import { requireSession } from "@/lib/auth/session";
+import { getMonthEntries, getMonthReport, resolveMonth } from "@/lib/finance/report";
 import { greetingRO, longDateRO } from "@/lib/format";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardPage({ searchParams }: PageProps<"/">) {
   const { user, membership } = await requireSession();
-  const { parola, eroare } = await searchParams;
+  const { parola, eroare, luna } = await searchParams;
+  const supabase = await createClient();
+  const month = await resolveMonth(supabase, membership.businessId, luna);
+  const [report, entries] = await Promise.all([
+    getMonthReport(supabase, membership.businessId, month),
+    getMonthEntries(supabase, membership.businessId, month),
+  ]);
   const firstName = (user.fullName || user.email).split(/[\s@]/)[0];
 
   return (
@@ -50,29 +59,13 @@ export default async function DashboardPage({ searchParams }: PageProps<"/">) {
         </ul>
       </section>
 
-      {can(membership, "reports.view") && (
-        <section className="rounded-[var(--radius-card)] bg-white p-6 shadow-soft">
-          <div className="flex items-center justify-between">
-            <h2 className="font-bold text-stone-900">Luna aceasta</h2>
-            <span className="text-xs font-medium text-stone-400">Rezultat financiar simplificat</span>
-          </div>
-          <div className="mt-5 grid grid-cols-3 gap-3 sm:gap-6">
-            {[
-              ["Încasări", "text-brand-700"],
-              ["Cheltuieli", "text-rose-600"],
-              ["Rezultat", "text-stone-900"],
-            ].map(([label, color]) => (
-              <div key={label}>
-                <p className="text-sm text-stone-500">{label}</p>
-                <p className={`mt-1 text-lg font-bold tabular sm:text-2xl ${color} opacity-30`}>– lei</p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-6 text-sm text-stone-500">
-            Cifrele apar aici după primele încasări și cheltuieli.
-          </p>
-        </section>
-      )}
+      <MonthReportCard
+        report={report}
+        income={entries.income}
+        expenses={entries.expenses}
+        basePath="/"
+        seesAll={can(membership, "reports.view")}
+      />
     </div>
   );
 }

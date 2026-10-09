@@ -101,7 +101,7 @@ Nu se calculează profit pe produs sau pe categorie de produs și nu se inventea
 |---|---|---|
 | 1 | Proiect, schema Supabase + RLS + audit, autentificare (login, logout, resetare parolă), structura aplicației | **gata, testată local** |
 | 2 | Setări: utilizatori (invitare, rol, dezactivare), categorii, canale, locații, cursuri, date firmă, istoric modificări | **gata, testată local** (preluarea cursului BNR nu a putut fi testată live) |
-| 3 | Încasări și Cheltuieli: formulare rapide, listă, căutare, editare, ștergere cu confirmare, atașamente | următoarea |
-| 4 | Dashboard: filtre de perioadă, indicatori, comparații, grafic lunar | |
-| 5 | Rapoarte și export CSV/Excel | |
+| 3 | Încasări și Cheltuieli: formulare rapide, listă, căutare, editare, ștergere cu confirmare, atașamente | **parțial**: formulare (târg, vânzare, cheltuială, motorină), liste pe lună, ștergere cu confirmare, import CSV. Lipsesc: căutare, editare, atașamente |
+| 4 | Dashboard: filtre de perioadă, indicatori, comparații, grafic lunar | **parțial**: raportul lunii cu selector de lună și grafic pe canale. Lipsesc: comparații între luni, grafic pe mai multe luni |
+| 5 | Rapoarte și export CSV/Excel | **parțial**: raport lunar și export CSV. Lipsește Excel |
 | 6 | Publicare pe Vercel + Supabase, verificare finală | |

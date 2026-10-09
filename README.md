@@ -18,6 +18,14 @@ npm run dev                   # http://localhost:3000
 
 Emailurile locale (resetare parolă, invitații) se văd în Mailpit: http://127.0.0.1:54324.
 
+Import din CSV (de exemplu o pagină de caiet copiată): coloanele sunt descrise în `scripts/import-csv.ts`.
+Fără `--apply` doar arată ce ar importa; rulat de două ori nu dublează rândurile.
+
+```bash
+npm run import-csv -- --file caiet.csv --email admin@firma.ro          # verificare
+npm run import-csv -- --file caiet.csv --email admin@firma.ro --apply  # import
+```
+
 ## Variabile de mediu
 
 | Variabilă | Unde | Descriere |
@@ -70,4 +78,4 @@ Migrațiile sunt în `supabase/migrations/` și se aplică în ordine.
 
 ## Stare
 
-Etapele 1 (proiect, schemă, RLS, audit, autentificare) și 2 (setări, utilizatori, istoric) sunt gata și testate pe un Supabase local. Restul etapelor sunt în [docs/PLAN.md](docs/PLAN.md). Publicarea online nu a fost încă făcută.
+Etapele 1 (proiect, schemă, RLS, audit, autentificare) și 2 (setări, utilizatori, istoric) sunt gata și testate pe un Supabase local. Din etapele 3–5 sunt gata formularele de încasări și cheltuieli, raportul lunar cu selector de lună și exportul CSV; vezi tabelul din plan pentru ce lipsește. Restul etapelor sunt în [docs/PLAN.md](docs/PLAN.md). Publicarea online nu a fost încă făcută.
