@@ -11,7 +11,10 @@ export function LoginForm({ linkExpired }: { linkExpired: boolean }) {
   const [state, action] = useActionState(signIn, {});
   return (
     <form action={action} className="space-y-5" noValidate>
-      <h1 className="text-lg font-bold text-stone-900">Autentificare</h1>
+      <div>
+        <h1 className="text-xl font-bold tracking-tight text-stone-900">Autentificare</h1>
+        <p className="helper mt-1">Intră cu adresa de email a contului tău.</p>
+      </div>
       {linkExpired && <Alert tone="error">Linkul a expirat sau a fost deja folosit.</Alert>}
       {state.message && <Alert tone="error">{state.message}</Alert>}
       <Field

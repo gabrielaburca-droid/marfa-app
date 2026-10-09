@@ -19,7 +19,7 @@ export function SettingsNav() {
       aria-label="Setări"
       className="-mx-4 mb-6 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0"
     >
-      <ul className="flex w-max gap-1 rounded-2xl bg-stone-200/50 p-1">
+      <ul className="flex w-max gap-1 rounded-2xl border border-stone-200 bg-stone-100/70 p-1">
         {TABS.map((t) => {
           const active = pathname === t.href;
           return (

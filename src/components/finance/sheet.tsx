@@ -24,7 +24,13 @@ export function Sheet({
 
   useEffect(() => {
     const dialog = ref.current;
-    if (dialog && !dialog.open) dialog.showModal();
+    if (dialog && !dialog.open) {
+      dialog.showModal();
+      // Start in the first field to type in, not on the close button.
+      dialog
+        .querySelector<HTMLElement>("input:not([type=hidden]):not([type=radio]), select, textarea")
+        ?.focus();
+    }
   }, []);
 
   const close = () => router.replace(closeHref, { scroll: false });

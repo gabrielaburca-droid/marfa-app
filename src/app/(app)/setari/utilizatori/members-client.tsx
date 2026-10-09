@@ -69,7 +69,7 @@ function MemberRow({ m }: { m: Member }) {
     <li className={`flex flex-wrap items-center gap-x-4 gap-y-3 px-4 py-4 ${pending ? "opacity-60" : ""}`}>
       <div className="min-w-48 flex-1">
         <p className="text-sm font-medium">
-          {m.name || m.email} {m.isSelf && <span className="text-stone-400">(dvs.)</span>}
+          {m.name || m.email} {m.isSelf && <span className="text-stone-500">(dvs.)</span>}
         </p>
         {m.name && <p className="text-xs text-stone-500">{m.email}</p>}
       </div>

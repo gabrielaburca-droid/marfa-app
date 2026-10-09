@@ -187,7 +187,7 @@ function Row({
       <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1">
         <p
           data-name
-          className={`text-sm font-semibold ${item.is_active ? "text-stone-800" : "text-stone-400 line-through"}`}
+          className={`text-sm font-semibold ${item.is_active ? "text-stone-800" : "text-stone-500 line-through"}`}
         >
           {item.name}
         </p>

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { addMember, createBusiness, latestEmailLink, login, newUser, PASSWORD } from "./helpers";
+import { addMember, createBusiness, latestEmailLink, login, logout, newUser, PASSWORD } from "./helpers";
 
 test("anonymous visitors are sent to the login page", async ({ page }) => {
   for (const path of ["/", "/incasari", "/cheltuieli", "/rapoarte", "/setari"]) {
@@ -23,8 +23,7 @@ test("admin logs in, sees the full navigation and logs out", async ({ page }) =>
     await expect(nav.getByRole("link", { name: label })).toBeVisible();
   }
 
-  await page.getByRole("button", { name: "Ieșire din cont" }).click();
-  await expect(page).toHaveURL(/\/login$/);
+  await logout(page);
   await page.goto("/");
   await expect(page).toHaveURL(/\/login$/);
 });
@@ -70,7 +69,7 @@ test("password reset by email", async ({ page }) => {
   await page.getByRole("button", { name: "Salvează parola" }).click();
   await expect(page.getByText("Parola a fost salvată.")).toBeVisible();
 
-  await page.getByRole("button", { name: "Ieșire din cont" }).click();
+  await logout(page);
   await login(page, user.email, PASSWORD);
   await expect(page.getByRole("alert").filter({ hasText: "Email sau parolă incorectă." })).toBeVisible();
   await login(page, user.email, newPassword);

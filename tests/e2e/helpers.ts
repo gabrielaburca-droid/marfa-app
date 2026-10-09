@@ -44,3 +44,10 @@ export async function latestEmailLink(to: string): Promise<string> {
   }
   throw new Error(`No email for ${to}`);
 }
+
+/** Sign out through the profile menu in the top bar. */
+export async function logout(page: Page) {
+  await page.getByRole("button", { name: "Contul meu" }).click();
+  await page.getByRole("button", { name: "Ieșire din cont" }).click();
+  await expect(page).toHaveURL(/\/login$/);
+}

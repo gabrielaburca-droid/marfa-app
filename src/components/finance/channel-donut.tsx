@@ -1,9 +1,9 @@
 import { formatRON } from "@/lib/format";
 import type { MonthReport } from "@/lib/finance/report";
 
-/** Market channels in greens, everything else in distinct calm colours. */
-const MARKET = ["#2f7a54", "#8cc4a2", "#4f9d74", "#b6dcc4"];
-const OTHER = ["#f59e0b", "#38bdf8", "#fb7185", "#818cf8", "#a78bfa", "#2dd4bf", "#a8a29e", "#f472b6"];
+/** Market channels in olive shades, everything else in distinct warm colours. */
+const MARKET = ["#687456", "#aab494", "#8a9672", "#cdd3bc"];
+const OTHER = ["#d9a441", "#548590", "#cf735a", "#9dbfc6", "#b8862a", "#a99e92", "#e8c27a", "#76825f"];
 
 export function channelColors(channels: MonthReport["channels"]): Record<string, string> {
   let m = 0;

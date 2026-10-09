@@ -51,21 +51,19 @@ test("market day, sale and EUR expense show up in the month report", async ({ pa
   await exp.getByRole("button", { name: "Salvează cheltuiala" }).click();
   await expectToast(page, "Cheltuiala a fost salvată.");
 
-  // The front page report for September.
+  // The dashboard for September: headline figures, chart, month selector.
   await page.goto("/?luna=2026-09");
-  const report = page
-    .locator("section")
-    .filter({ has: page.getByRole("heading", { name: "Raportul lunii" }) });
-  await expect(report).toContainText("Septembrie 2026");
-  await expect(report).toContainText("6.450,00 RON"); // 6170 + 280
-  await expect(report).toContainText("14.681,20 RON");
-  await expect(report).toContainText("-8.231,20 RON");
-  await expect(report.getByRole("img", { name: "Intrări pe canale" })).toBeVisible();
+  const kpis = page.getByRole("region", { name: "Indicatorii lunii" });
+  await expect(kpis).toContainText("6.450,00 RON"); // 6170 + 280
+  await expect(kpis).toContainText("14.681,20 RON");
+  await expect(kpis).toContainText("-8.231,20 RON");
+  await expect(page.getByRole("img", { name: "Intrări pe canale" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Alege luna" })).toContainText("Septembrie 2026");
 
   // Month selector: August is empty.
-  await report.getByRole("link", { name: "Luna anterioară" }).click();
-  await expect(report).toContainText("August 2026");
-  await expect(report).toContainText("Nicio intrare în august 2026.");
+  await page.getByRole("link", { name: "Luna anterioară" }).click();
+  await expect(page.getByRole("navigation", { name: "Alege luna" })).toContainText("August 2026");
+  await expect(page.getByText("Nicio intrare în august 2026.")).toBeVisible();
 
   // Reports page and CSV export for September.
   await page.goto("/rapoarte?luna=2026-09");

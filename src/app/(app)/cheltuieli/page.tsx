@@ -70,7 +70,7 @@ export default async function Page({ searchParams }: PageProps<"/cheltuieli">) {
       <div className="mb-4">
         <MonthNav month={month} basePath="/cheltuieli" />
       </div>
-      <section className="rounded-[var(--radius-card)] bg-white p-5 shadow-soft sm:p-6">
+      <section className="surface p-5 sm:p-6">
         <div className="flex items-center justify-between gap-3">
           <h2 className="font-bold text-stone-900">
             {entries.expenses.length} {entries.expenses.length === 1 ? "cheltuială" : "cheltuieli"}

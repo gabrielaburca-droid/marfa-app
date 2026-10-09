@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export const viewport: Viewport = { themeColor: "#f6f5f1" };
+export const viewport: Viewport = { themeColor: "#faf8f3" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

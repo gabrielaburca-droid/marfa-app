@@ -1,22 +1,77 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens. The whole app uses Tailwind's stone / brand / rose / amber /
+ * sky scales, so redefining them here re-themes every screen at once:
+ *   stone → warm browns and beiges (text, borders, quiet surfaces)
+ *   brand → muted olive (primary actions, positive figures)
+ *   gold  → sunflower accent, used sparingly
+ *   rose  → muted terracotta (errors, expenses)
+ *   amber → warm amber (warnings, fuel)
+ *   sky   → dusty teal (online channels)
+ */
 @theme {
-  /* Calm sage green: positive results and primary actions. */
-  --color-brand-50: #eff7f2;
-  --color-brand-100: #d9eee1;
-  --color-brand-200: #b6dcc4;
-  --color-brand-300: #8cc4a2;
-  --color-brand-500: #3f9468;
-  --color-brand-600: #2f7a54;
-  --color-brand-700: #276345;
-  --color-brand-800: #214f39;
+  --color-canvas: #faf8f3;
 
-  /* Warm paper background behind white cards. */
-  --color-canvas: #f6f5f1;
+  --color-stone-50: #f7f4ee;
+  --color-stone-100: #f1ece3;
+  --color-stone-200: #e9e3d9;
+  --color-stone-300: #d9d0c3;
+  --color-stone-400: #a99e92;
+  /* #81776d darkened slightly so small secondary text keeps 4.5:1 contrast. */
+  --color-stone-500: #776d63;
+  --color-stone-600: #62584f;
+  --color-stone-700: #4d433b;
+  --color-stone-800: #3f352e;
+  --color-stone-900: #332a24;
+
+  --color-brand-50: #f4f5ef;
+  --color-brand-100: #e6e9dc;
+  --color-brand-200: #cdd3bc;
+  --color-brand-300: #aab494;
+  --color-brand-400: #8a9672;
+  --color-brand-500: #76825f;
+  --color-brand-600: #687456;
+  --color-brand-700: #555f46;
+  --color-brand-800: #454d3a;
+  --color-brand-900: #393f31;
+
+  --color-gold-50: #fbf5e6;
+  --color-gold-100: #f6e8c4;
+  --color-gold-300: #e8c27a;
+  --color-gold-500: #d9a441;
+  --color-gold-600: #b8862a;
+  --color-gold-700: #8a6219;
+
+  --color-rose-50: #fbf1ee;
+  --color-rose-100: #f6ddd6;
+  --color-rose-200: #ecbcae;
+  --color-rose-300: #df9580;
+  --color-rose-400: #cf735a;
+  --color-rose-500: #bd5a40;
+  --color-rose-600: #a84a33;
+  --color-rose-700: #8a3d2b;
+  --color-rose-800: #6f3325;
+
+  --color-amber-50: #fcf4e8;
+  --color-amber-100: #f7e3c4;
+  --color-amber-500: #c9862e;
+  --color-amber-600: #a86c1f;
+  --color-amber-700: #8a5819;
+  --color-amber-800: #6e4614;
+
+  --color-sky-50: #eef4f5;
+  --color-sky-100: #d8e6e9;
+  --color-sky-300: #9dbfc6;
+  --color-sky-400: #6f9ea8;
+  --color-sky-500: #548590;
+  --color-sky-600: #456e78;
+  --color-sky-700: #3b5c64;
 
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
-  --radius-card: 1.25rem;
-  --shadow-soft: 0 1px 2px rgb(28 25 23 / 0.04), 0 4px 16px -6px rgb(28 25 23 / 0.08);
+  --radius-card: 1.125rem;
+  --shadow-soft: 0 1px 2px rgb(51 42 36 / 0.04), 0 2px 8px -4px rgb(51 42 36 / 0.06);
+  --shadow-lift: 0 1px 2px rgb(51 42 36 / 0.05), 0 12px 32px -12px rgb(51 42 36 / 0.18);
 }
 
 :root {
@@ -33,5 +88,29 @@ body {
 }
 
 ::selection {
-  @apply bg-brand-100 text-brand-800;
+  @apply bg-gold-100 text-stone-900;
+}
+
+/* ------------------------------------------------------------------
+ * Shared component styles (typography + surfaces). Pages use these
+ * instead of repeating long class lists.
+ * ------------------------------------------------------------------ */
+/* A white card with a hairline border; the default surface. */
+@utility surface {
+  @apply rounded-[var(--radius-card)] border border-stone-200 bg-white shadow-soft;
+}
+@utility page-title {
+  @apply text-[26px] leading-tight font-bold tracking-tight text-stone-900 lg:text-[30px];
+}
+@utility section-title {
+  @apply text-base font-bold text-stone-900;
+}
+@utility eyebrow {
+  @apply text-[11px] font-bold tracking-[0.08em] text-stone-500 uppercase;
+}
+@utility helper {
+  @apply text-sm text-stone-500;
+}
+@utility figure {
+  @apply font-extrabold tracking-tight tabular-nums;
 }

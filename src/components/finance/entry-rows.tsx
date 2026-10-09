@@ -1,4 +1,5 @@
 import { Fuel, ReceiptText, ShoppingBag, Store } from "lucide-react";
+import { Badge } from "@/components/ui/card";
 import type { ExpenseRow, IncomeRow } from "@/lib/finance/report";
 import { formatDate, formatMoney, formatNumber, formatRON } from "@/lib/format";
 
@@ -27,17 +28,15 @@ export function IncomeItem({ e, action }: { e: IncomeRow; action?: React.ReactNo
   const deducted = Number(e.gross_amount_ron) !== Number(e.net_amount_ron);
   return (
     <li className={rowClass}>
-      <span className={`${iconClass} ${market ? "bg-brand-50 text-brand-700" : "bg-sky-50 text-sky-700"}`}>
+      <span className={`${iconClass} ${market ? "bg-brand-50 text-brand-700" : "bg-sky-50 text-sky-600"}`}>
         <Icon className="size-[18px]" aria-hidden />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-stone-900" data-name>
-          {title}
-          {!sale && (
-            <span className="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-semibold text-brand-700">
-              total
-            </span>
-          )}
+        <p className="flex min-w-0 items-center gap-2 text-sm font-semibold text-stone-900">
+          <span className="truncate" data-name>
+            {title}
+          </span>
+          {!sale && <Badge tone="green">total zi</Badge>}
         </p>
         <p className="truncate text-xs text-stone-500">{meta}</p>
       </div>
@@ -62,13 +61,11 @@ export function ExpenseItem({ e, action }: { e: ExpenseRow; action?: React.React
         <Icon className="size-[18px]" aria-hidden />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-stone-900" data-name>
-          {e.description || e.category?.name}
-          {fine && (
-            <span className="ml-2 rounded-full bg-rose-50 px-2 py-0.5 text-[11px] font-semibold text-rose-700">
-              amendă
-            </span>
-          )}
+        <p className="flex min-w-0 items-center gap-2 text-sm font-semibold text-stone-900">
+          <span className="truncate" data-name>
+            {e.description || e.category?.name}
+          </span>
+          {fine && <Badge tone="red">amendă</Badge>}
         </p>
         <p className="truncate text-xs text-stone-500">
           {[e.category?.name, e.supplier, formatDate(e.expense_date)].filter(Boolean).join(" · ")}

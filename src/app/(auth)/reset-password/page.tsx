@@ -10,7 +10,7 @@ export default function ResetPasswordPage() {
   const [state, action] = useActionState(updatePassword, {});
   return (
     <form action={action} className="space-y-5" noValidate>
-      <h1 className="text-lg font-bold text-stone-900">Setați parola</h1>
+      <h1 className="text-xl font-bold tracking-tight text-stone-900">Setați parola</h1>
       {state.message && <Alert tone="error">{state.message}</Alert>}
       <Field
         label="Parolă nouă"

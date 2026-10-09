@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
   return (
     <form action={action} className="space-y-5" noValidate>
       <div>
-        <h1 className="text-lg font-bold text-stone-900">Resetare parolă</h1>
+        <h1 className="text-xl font-bold tracking-tight text-stone-900">Resetare parolă</h1>
         <p className="mt-1 text-sm text-stone-500">Vă trimitem un link pentru a seta o parolă nouă.</p>
       </div>
       {state.message && <Alert tone={state.ok ? "success" : "error"}>{state.message}</Alert>}

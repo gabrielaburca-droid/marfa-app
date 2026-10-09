@@ -55,7 +55,7 @@ export function ExpenseForm({
       <form action={action} className="space-y-5" noValidate>
         <input type="hidden" name="client_token" value={token} />
         <div className="space-y-1.5">
-          <label htmlFor="category_id" className="block text-sm font-medium text-stone-600">
+          <label htmlFor="category_id" className="block text-sm font-semibold text-stone-700">
             Categorie
           </label>
           <select
@@ -97,7 +97,7 @@ export function ExpenseForm({
             errors={e.amount}
           />
           <div className="space-y-1.5">
-            <label htmlFor="currency" className="block text-sm font-medium text-stone-600">
+            <label htmlFor="currency" className="block text-sm font-semibold text-stone-700">
               Monedă
             </label>
             <select

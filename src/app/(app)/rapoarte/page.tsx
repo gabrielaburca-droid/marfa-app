@@ -43,7 +43,7 @@ export default async function Page({ searchParams }: PageProps<"/rapoarte">) {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <section className="rounded-[var(--radius-card)] bg-white p-5 shadow-soft sm:p-6">
+        <section className="surface p-5 sm:p-6">
           <h2 className="font-bold text-stone-900">Rezumat financiar</h2>
           <table className="mt-3 w-full text-sm">
             <tbody className="divide-y divide-stone-100">
@@ -79,7 +79,7 @@ export default async function Page({ searchParams }: PageProps<"/rapoarte">) {
           </p>
         </section>
 
-        <section className="rounded-[var(--radius-card)] bg-white p-5 shadow-soft sm:p-6">
+        <section className="surface p-5 sm:p-6">
           <h2 className="font-bold text-stone-900">Intrări pe canale</h2>
           {report.channels.length === 0 ? (
             <p className="mt-4 text-sm text-stone-500">Nicio intrare în {monthLabelLower(month)}.</p>
@@ -89,7 +89,7 @@ export default async function Page({ searchParams }: PageProps<"/rapoarte">) {
                 <li key={c.id}>
                   <div className="flex justify-between gap-3 text-sm">
                     <span className="font-medium text-stone-700">
-                      {c.name} <span className="text-stone-400">· {c.count}</span>
+                      {c.name} <span className="text-stone-500">· {c.count}</span>
                     </span>
                     <span className="font-semibold text-stone-900 tabular">{formatRON(c.total)}</span>
                   </div>

@@ -25,7 +25,7 @@ function Chips({
 }) {
   return (
     <fieldset className="space-y-2">
-      <legend className="mb-2 text-sm font-medium text-stone-600">{label}</legend>
+      <legend className="mb-2 text-sm font-semibold text-stone-700">{label}</legend>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => (
           <label key={o.id} className="cursor-pointer">
@@ -82,7 +82,7 @@ export function MarketIncomeForm({
           errors={e.channel_id}
         />
         <div className="space-y-1.5">
-          <label htmlFor="gross_amount" className="block text-sm font-medium text-stone-600">
+          <label htmlFor="gross_amount" className="block text-sm font-semibold text-stone-700">
             Total încasat în ziua respectivă
           </label>
           <input

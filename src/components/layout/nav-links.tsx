@@ -1,42 +1,120 @@
 "use client";
 
-import { Plus, X } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { Logo } from "@/components/ui/logo";
 import { NAV_ICONS, QUICK_ICONS, TONES } from "./icons";
-import type { NavItem } from "./nav-items";
+import { isActive, type NavGroup, type NavItem } from "./nav-items";
 import { QUICK_ACTIONS } from "./quick-actions";
 
-function isActive(pathname: string, href: string) {
-  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
-}
+export const SIDEBAR_COOKIE = "marfa_sidebar";
 
-export function SidebarLinks({ items }: { items: NavItem[] }) {
+/**
+ * Desktop sidebar, grouped. It can shrink to icons only; the choice is kept
+ * in a cookie so the server renders it the same way on the next visit.
+ */
+export function Sidebar({
+  items,
+  businessName,
+  initialCollapsed,
+}: {
+  items: NavItem[];
+  businessName: string;
+  initialCollapsed: boolean;
+}) {
   const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(initialCollapsed);
+  const groups = items.reduce<[NavGroup, NavItem[]][]>((acc, item) => {
+    const g = acc.find(([name]) => name === item.group);
+    if (g) g[1].push(item);
+    else acc.push([item.group, [item]]);
+    return acc;
+  }, []);
+
+  const toggle = () => {
+    const next = !collapsed;
+    setCollapsed(next);
+    document.cookie = `${SIDEBAR_COOKIE}=${next ? "collapsed" : "open"}; path=/; max-age=31536000; samesite=lax`;
+  };
+
   return (
-    <ul className="space-y-1">
-      {items.map((item) => {
-        const active = isActive(pathname, item.href);
-        const Icon = NAV_ICONS[item.icon];
-        return (
-          <li key={item.href}>
-            <Link
-              href={item.href}
-              aria-current={active ? "page" : undefined}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
-                active
-                  ? "bg-white text-stone-900 shadow-soft"
-                  : "text-stone-500 hover:bg-white/60 hover:text-stone-800"
-              }`}
-            >
-              <Icon className={`size-[18px] ${active ? "text-brand-600" : ""}`} strokeWidth={2} aria-hidden />
-              {item.label}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
+    <aside
+      className={`sticky top-0 hidden h-dvh shrink-0 flex-col border-r border-stone-200 bg-white py-5 transition-[width] duration-200 lg:flex ${
+        collapsed ? "w-[76px] px-3" : "w-64 px-4"
+      }`}
+    >
+      <div className={collapsed ? "flex justify-center" : "px-2"}>
+        <Logo name={businessName} compact={collapsed} />
+      </div>
+
+      <nav aria-label="Navigare principală" className="mt-8 flex-1 space-y-6">
+        {groups.map(([group, list]) => (
+          <div key={group}>
+            {collapsed ? (
+              <div className="mx-auto mb-2 h-px w-6 bg-stone-200" aria-hidden />
+            ) : (
+              <p className="eyebrow mb-2 px-3">{group}</p>
+            )}
+            <ul className="space-y-0.5">
+              {list.map((item) => {
+                const active = isActive(pathname, item.href);
+                const Icon = NAV_ICONS[item.icon];
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      aria-current={active ? "page" : undefined}
+                      title={collapsed ? item.label : undefined}
+                      className={`group relative flex items-center gap-3 rounded-xl py-2.5 text-sm font-medium transition-colors ${
+                        collapsed ? "justify-center px-0" : "px-3"
+                      } ${
+                        active
+                          ? "bg-brand-50 text-brand-800"
+                          : "text-stone-600 hover:bg-stone-50 hover:text-stone-900"
+                      }`}
+                    >
+                      {active && (
+                        <span
+                          className="absolute top-2 bottom-2 left-0 w-[3px] rounded-full bg-brand-600"
+                          aria-hidden
+                        />
+                      )}
+                      <Icon
+                        className={`size-[18px] shrink-0 ${active ? "text-brand-700" : "text-stone-400 group-hover:text-stone-600"}`}
+                        strokeWidth={2}
+                        aria-hidden
+                      />
+                      <span className={collapsed ? "sr-only" : ""}>{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </nav>
+
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={collapsed ? "Extinde meniul" : "Restrânge meniul"}
+        aria-expanded={!collapsed}
+        className={`flex items-center gap-2 rounded-xl py-2 text-xs font-medium text-stone-500 hover:bg-stone-50 hover:text-stone-800 ${
+          collapsed ? "justify-center" : "px-3"
+        }`}
+      >
+        {collapsed ? (
+          <ChevronsRight className="size-4" aria-hidden />
+        ) : (
+          <>
+            <ChevronsLeft className="size-4" aria-hidden />
+            Restrânge
+          </>
+        )}
+      </button>
+    </aside>
   );
 }
 
@@ -58,7 +136,7 @@ export function BottomNav({ items }: { items: NavItem[] }) {
         <Link
           href={item.href}
           aria-current={active ? "page" : undefined}
-          className={`flex flex-col items-center gap-1 py-2 text-[11px] font-medium ${active ? "text-brand-700" : "text-stone-400"}`}
+          className={`flex flex-col items-center gap-1 py-2 text-[11px] font-semibold ${active ? "text-brand-700" : "text-stone-500"}`}
         >
           <Icon className="size-[22px]" strokeWidth={active ? 2.2 : 1.8} aria-hidden />
           {item.label}
@@ -77,35 +155,16 @@ export function BottomNav({ items }: { items: NavItem[] }) {
           <div
             role="dialog"
             aria-label="Adaugă rapid"
-            className="absolute inset-x-3 bottom-24 rounded-3xl bg-white p-3 shadow-xl"
+            className="absolute inset-x-3 bottom-24 rounded-3xl border border-stone-200 bg-white p-3 shadow-[var(--shadow-lift)]"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="px-3 pt-2 pb-3 text-sm font-semibold text-stone-500">Ce vrei să adaugi?</p>
-            <ul className="grid grid-cols-2 gap-2">
-              {QUICK_ACTIONS.map((a) => {
-                const Icon = QUICK_ICONS[a.icon];
-                return (
-                  <li key={a.href}>
-                    <Link
-                      href={a.href}
-                      className="flex flex-col gap-3 rounded-2xl bg-stone-50 p-4 active:bg-stone-100"
-                    >
-                      <span
-                        className={`flex size-10 items-center justify-center rounded-xl ${TONES[a.tone]}`}
-                      >
-                        <Icon className="size-5" aria-hidden />
-                      </span>
-                      <span className="text-sm font-semibold text-stone-800">{a.title}</span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <QuickGrid onPick={() => setOpen(false)} />
           </div>
         </div>
       )}
       <nav
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-stone-200/70 bg-white/90 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-stone-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
         aria-label="Navigare principală"
       >
         <ul className="flex items-center">
@@ -116,7 +175,7 @@ export function BottomNav({ items }: { items: NavItem[] }) {
               onClick={() => setOpen((o) => !o)}
               aria-expanded={open}
               aria-label={open ? "Închide" : "Adaugă rapid"}
-              className="-mt-6 flex size-14 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-600/30 transition-transform active:scale-95"
+              className="-mt-6 flex size-14 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-700/25 ring-4 ring-canvas transition-transform active:scale-95"
             >
               {open ? (
                 <X className="size-6" aria-hidden />
@@ -129,5 +188,33 @@ export function BottomNav({ items }: { items: NavItem[] }) {
         </ul>
       </nav>
     </>
+  );
+}
+
+/** The four quick entries as a 2×2 grid (phone sheet and desktop menu). */
+export function QuickGrid({ onPick }: { onPick?: () => void }) {
+  return (
+    <ul className="grid grid-cols-2 gap-2">
+      {QUICK_ACTIONS.map((a) => {
+        const Icon = QUICK_ICONS[a.icon];
+        return (
+          <li key={a.href}>
+            <Link
+              href={a.href}
+              onClick={onPick}
+              className="flex h-full flex-col gap-3 rounded-2xl bg-stone-50 p-4 transition-colors hover:bg-stone-100"
+            >
+              <span className={`flex size-10 items-center justify-center rounded-xl ${TONES[a.tone]}`}>
+                <Icon className="size-5" aria-hidden />
+              </span>
+              <span>
+                <span className="block text-sm font-semibold text-stone-800">{a.title}</span>
+                <span className="block text-xs text-stone-500">{a.hint}</span>
+              </span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
